@@ -5,6 +5,7 @@ for (let i = 1; i <= 1000; i++ ) {
 let numeroOculto = numerosPosibles[Math.floor(Math.random() * numerosPosibles.length)];
 
 function jugar() {
+    let intentos = 2;
     let numeroJugador;
 
     do {
