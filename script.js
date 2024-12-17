@@ -1,25 +1,27 @@
-// funcion para generar numero oculto 
+// función para generar número oculto 
 function generarNumeroOculto(rango) {
     return Math.floor(Math.random() * rango) + 1; 
 }
 
 function nivelesDeDificultad() {
-    let dificultad = prompt("Antes de comenzar, elige el nivel de dificultad! (facil 1-100 15 intentos, medio 1-500 10 intentos, dificil 1-1000 7 intentos.)");
-    dificultad = dificultad.toLowerCase();  // Convertimos a minúsculas para no diferenciar entre mayúsculas y minúsculas
+    let dificultad = prompt(
+        "Antes de comenzar, elige el nivel de dificultad:\n" + "Facil: de 1-100 (15 intentos)\n" + "Medio: de 1-500 (10 intentos)\n" + "Dificil: de 1-1000 (7 intentos)"
+    );
+    dificultad = dificultad.toLowerCase();
     switch(dificultad) {
         case "facil":
-            return {rango: 100, intentos: 15};
+            return {nombre: "Facil", rango: 100, intentos: 15};
         case "medio":
-            return {rango: 500, intentos: 10};
+            return {nombre: "Medio", rango: 500, intentos: 10};
         case "dificil":
-            return {rango: 1000, intentos: 7};
+            return {nombre: "Dificil", rango: 1000, intentos: 7};
         default:
             alert("Opción no válida, se seleccionará la dificultad 'fácil'.");
-            return {rango: 100, intentos: 15};            
+            return {nombre: "Facil", rango: 100, intentos: 15};            
     }
 }
 
-// funcion para preguntar si quiere comenzar
+// función para preguntar si quiere comenzar
 function preguntarInicio() {
     let quieresJugar = confirm("¡Hola! ¿Quieres comenzar a jugar?");
     if (quieresJugar) {
@@ -30,81 +32,93 @@ function preguntarInicio() {
     }
 }
 
-// funcion para solicitar el numero 
-function pedirNumero() {
-    let entrada = prompt("Ingrese un numero e intente adivinar!: ");
+// función para solicitar el número 
+function pedirNumero(dificultad, intentos) {
+    let entrada = prompt("Elegiste la dificultad " + dificultad + ". Tienes: " + intentos + " intentos. Ingrese un número e intente adivinar!: ");
+    
     if (entrada === null) {
-        return null;
+        return null; 
     }
 
     if (isNaN(entrada) || entrada === "") {
         alert("Eso no es un número válido. Inténtalo nuevamente.");
-        return pedirNumero();
+        return pedirNumero(dificultad, intentos);
     }
-    return parseInt(entrada);
+    return parseInt(entrada); 
 }
 
-// funcion para dar la pista si mas bajo o mas alto 
+// función para dar la pista si más bajo o más alto 
 function darPista(numeroJugador, numeroOculto) {
     if (numeroJugador < numeroOculto) {
-        alert("El numero oculto es mas grande, intentalo nuevamente!");
+        alert("El número oculto es más grande, ¡inténtalo nuevamente!");
     } else if (numeroJugador > numeroOculto) {
-        alert("El numero oculto es mas chico, intentalo nuevamente!");
+        alert("El número oculto es más chico, ¡inténtalo nuevamente!");
     }
 }
 
-// funcion para jugar de nuevo 
+// función para jugar de nuevo 
 function jugarDeNuevo() {
     let jugar = confirm("¿Quieres jugar nuevamente?");
     if(jugar) {
         return true;
     } else {
         alert("Gracias por jugar!");
-        return false
+        return false;
     }
 }
 
-// funcion para que empiece el juego 
+// función para que empiece el juego 
 function iniciarJuego() {
-    // Obtener la dificultad seleccionada
     const dificultad = nivelesDeDificultad();
-    let numeroOculto = generarNumeroOculto(dificultad.rango); // Usamos el rango según la dificultad seleccionada
+    let numeroOculto = generarNumeroOculto(dificultad.rango);  
     let intentos = 0;
     let numeroJugador;
     let seguirJugando = true;
 
     while (seguirJugando) {
-        numeroJugador = pedirNumero();
+        numeroJugador = pedirNumero(dificultad.nombre, dificultad.intentos); 
+        if (numeroJugador === null) {
+            break;
+        }
+
         intentos++;
 
-        if (numeroJugador === null) {
-            break; // Si el jugador cancela, salimos del ciclo
+        if (numeroJugador === numeroOculto && intentos === 1) {
+            alert("¡Felicitaciones, sos un enfermo, adivinaste en 1 intento. Rompiste el juego no podes usarlo más");
+            break;
         }
 
+        if (numeroJugador === numeroOculto && intentos === 2) {
+                alert("¡Felicitaciones, sos un enfermo, adivinaste en 2 intentos.");
+                return iniciarJuego();
+        }
+        // Verifica si el jugador adivinó el número
         if (numeroJugador === numeroOculto) {
-            alert("Felicitaciones lo adivinaste! en " + intentos + " intentos!");
-            seguirJugando = jugarDeNuevo();
+            alert("¡Felicitaciones, lo adivinaste! en " + intentos + " intentos.");
+            seguirJugando = jugarDeNuevo();  // Pregunta si el jugador quiere jugar de nuevo
             if (seguirJugando) {
-                intentos = 0;
-                numeroOculto = generarNumeroOculto(dificultad.rango); // Generamos un nuevo número oculto
+                return iniciarJuego()
             }
         } else {
-            darPista(numeroJugador, numeroOculto);
+            darPista(numeroJugador, numeroOculto);  // Da la pista si el número es más grande o más pequeño
         }
 
-        // Si se superan los intentos, se termina el juego
+        // Si se superan los intentos, termina el juego
         if (intentos >= dificultad.intentos) {
-            alert("Te quedaste sin intentos, El número oculto era " + numeroOculto);
-            seguirJugando = jugarDeNuevo();
+            alert("Te quedaste sin intentos. El número oculto era " + numeroOculto);
+            seguirJugando = jugarDeNuevo();  // Pregunta si el jugador quiere jugar de nuevo
             if (seguirJugando) {
-                intentos = 0;
-                numeroOculto = generarNumeroOculto(dificultad.rango); // Generamos un nuevo número oculto
+                return iniciarJuego();
             }
         }
     }
 }
 
-// Verificar si el jugador quiere comenzar y ejecutar el juego
-if (preguntarInicio()) {
-    iniciarJuego();
-}
+
+window.addEventListener('load', function() {
+    // Ahora el código JS se ejecuta después de que toda la página está completamente cargada
+
+    if (preguntarInicio()) {
+        iniciarJuego();
+    }
+});
