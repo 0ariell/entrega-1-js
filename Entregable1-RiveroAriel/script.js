@@ -95,29 +95,24 @@ function iniciarJuego() {
         // Verifica si el jugador adivinó el número
         if (numeroJugador === numeroOculto) {
             alert("¡Felicitaciones, lo adivinaste! en " + intentos + " intentos.");
-            seguirJugando = jugarDeNuevo();  // Pregunta si el jugador quiere jugar de nuevo
+            seguirJugando = jugarDeNuevo();
             if (seguirJugando) {
                 return iniciarJuego()
             }
         } else {
-            darPista(numeroJugador, numeroOculto);  // Da la pista si el número es más grande o más pequeño
+            darPista(numeroJugador, numeroOculto);
         }
 
         // Si se superan los intentos, termina el juego
         if (intentos >= dificultad.intentos) {
             alert("Te quedaste sin intentos. El número oculto era " + numeroOculto);
-            seguirJugando = jugarDeNuevo();  // Pregunta si el jugador quiere jugar de nuevo
+            seguirJugando = jugarDeNuevo();
             if (seguirJugando) {
                 return iniciarJuego();
             }
         }
     }
 }
-
-
-window.addEventListener('load', function() {
-    // Ahora el código JS se ejecuta después de que toda la página está completamente cargada
-
     if (preguntarInicio()) {
         iniciarJuego();
     }
