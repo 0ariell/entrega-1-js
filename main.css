@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: helvetica;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #b09bff;
+}
+
+#titulo {
+    font-size: 63px;
+    padding: 24px;
+    background: #9c81ff;
+    color: rgb(27, 27, 27);
+}
+
+#subtitulo {
+    font-size: 45px;
+    padding: 24px;
+    background: #a78eff;
+}
+
+p { 
+    width: 50%;
+    font-size: 24px;
+}
+
+main {
+    padding: 24px;
+}
