@@ -116,4 +116,3 @@ function iniciarJuego() {
     if (preguntarInicio()) {
         iniciarJuego();
     }
-});
